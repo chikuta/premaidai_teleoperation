@@ -1,0 +1,2 @@
+- git: {local-name: "src/premaidai_description", uri: "https://github.com/chikuta/premaidai_description"}
+- git: {local-name: "src/premaidai_teleoperation", uri: "https://github.com/chikuta/premaidai_teleoperation"}
