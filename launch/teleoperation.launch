@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- args -->
+    <arg name="use_gui" default="true" />
+    <arg name="use_marker" default="true" />
+    <arg name="robot" default="premaidai" />
+
+    <!-- load robot -->
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find premaidai_description)/robots/$(arg robot).urdf.xacro'" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="rate" value="5" />
+    </node>
+
+    <!-- load displays -->
+    <param name="use_gui" value="$(arg use_gui)"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find premaidai_teleoperation)/rvizconfig/display.rviz"/>
+
+    <!-- teleperation node -->
+    <group if="$(arg use_marker)">
+        <node name="rhand_marker" pkg="premaidai_teleoperation" type="interactive_marker_node" output="screen">
+            <param name="base_link" value="base_link"/>
+            <param name="initial_frame" value="r_hand_ee"/>
+            <param name="frame_id" value="r_hand_marker"/>
+            <param name="mesh_resource" value="package://premaidai_description/meshes/r_hand.dae"/>
+        </node>
+        <node name="lhand_marker" pkg="premaidai_teleoperation" type="interactive_marker_node" output="screen">
+            <param name="base_link" value="base_link"/>
+            <param name="initial_frame" value="l_hand_ee"/>
+            <param name="frame_id" value="l_hand_marker"/>
+            <param name="mesh_resource" value="package://premaidai_description/meshes/l_hand.dae"/>
+        </node>
+    </group>
+</launch>
